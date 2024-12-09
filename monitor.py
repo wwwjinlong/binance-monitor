@@ -2,7 +2,7 @@
 
 import os
 import time
-import pygame
+
 
 import data_loader
 import utils
@@ -65,7 +65,7 @@ class Monitor:
                     volume / self.ma_7h_volume - 1,
                     int(volume/10000),
                 ))
-                pygame.mixer.music.play()    # 播放提示音
+                # pygame.mixer.music.play()    # 播放提示音
                 self.last_alarm = 1
                 self.last_alarm_tic = time.time()
             return
@@ -83,7 +83,7 @@ class Monitor:
                     i,
                     (price / self.prices[-1-i] - 1) * 100,
                 ))
-                pygame.mixer.music.play()    # 播放提示音
+                # pygame.mixer.music.play()    # 播放提示音
                 self.last_alarm = 1
                 self.last_alarm_tic = time.time()
             return
@@ -104,7 +104,7 @@ class Monitor:
                     (1 - price / self.prices[-1-i]) * 100,
                 ))
                 for _ in range(5):
-                    pygame.mixer.music.play()    # 重复播放提示音
+                    # pygame.mixer.music.play()    # 重复播放提示音
                     time.sleep(0.5)
                 self.last_alarm = -1
                 self.last_alarm_tic = time.time()
@@ -152,8 +152,8 @@ if __name__ == "__main__":
     last_cal_index_tic = -1
 
     print("开始执行价量监控...")
-    pygame.mixer.init()
-    pygame.mixer.music.load("refs/alarm.mp3")
+    # pygame.mixer.init()
+    # pygame.mixer.music.load("refs/alarm.mp3")
     while True:
 
         # 计算top100综合价格指数
