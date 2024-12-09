@@ -6,6 +6,7 @@ import time
 
 import data_loader
 import utils
+from wxpusher import WxPusher
 
 
 class Monitor:
@@ -58,7 +59,7 @@ class Monitor:
                 (price > self.ma_7d_price and price > self.ma_7h_price and price > self.ma_7m_price):
 
             if self.last_alarm != 1 or time.time() - self.last_alarm_tic > 600 and volume > 10000:
-                print("%s >>> %s, $%s, 交易额突增%.1f倍 ($%d万)" % (
+                WxPusher.send_message("%s >>> %s, $%s, 交易额突增%.1f倍 ($%d万)" % (
                     utils.tic2time(tic),
                     self.symbol,
                     utils.standardize(price),
@@ -76,7 +77,7 @@ class Monitor:
                 continue
 
             if self.last_alarm != 1 or time.time() - self.last_alarm_tic > 600:
-                print("%s >>> %s, $%s, %s分钟内价格上涨%.1f%%" % (
+                WxPusher.send_message("%s >>> %s, $%s, %s分钟内价格上涨%.1f%%" % (
                     utils.tic2time(tic),
                     self.symbol,
                     utils.standardize(price),
@@ -96,7 +97,7 @@ class Monitor:
                 continue
 
             if self.last_alarm != -1 or time.time() - self.last_alarm_tic > 600:
-                print("\033[1;31m%s >>> %s, $%s, %s分钟内价格下跌%.1f%%\033[0m" % (    # 显示红色字体
+                WxPusher.send_message("\033[1;31m%s >>> %s, $%s, %s分钟内价格下跌%.1f%%\033[0m" % (    # 显示红色字体
                     utils.tic2time(tic),
                     self.symbol,
                     utils.standardize(price),
@@ -151,7 +152,8 @@ if __name__ == "__main__":
         init_prices[coin] = monitor.prices[-1]
     last_cal_index_tic = -1
 
-    print("开始执行价量监控...")
+    WxPusher.send_message("开始执行价量监控...")
+
     # pygame.mixer.init()
     # pygame.mixer.music.load("refs/alarm.mp3")
     while True:
@@ -161,7 +163,7 @@ if __name__ == "__main__":
         for coin, monitor in top100.items():
             index += monitor.prices[-1] / init_prices[coin] / 100
         if time.time() - last_cal_index_tic > 600:
-            print("%s --- 价格指数, %.3f" % (
+            WxPusher.send_message("%s --- 价格指数, %.3f" % (
                 utils.tic2time(time.time()),
                 index,
             ))
