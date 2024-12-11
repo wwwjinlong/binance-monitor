@@ -10,7 +10,7 @@ import utils
 # 币安所有已上线币种 (不包括稳定币/看涨币/看跌币等币种，顺序不定)
 COINS = [
     "BTCUSDT", "ETHUSDT", "BNBUSDT",  "SOLUSDT", "ADAUSDT", "XRPUSDT", 
-    "TRXUSDT", "TONUSDT", "SHIBUSDT", "HBARUSDT", "ADAUSDT", "SUIUSDT", "DOTUSDT", "POLUSDT"
+    "TRXUSDT", "TONUSDT", "HBARUSDT", "DOGEUSDT", "SUIUSDT", "DOTUSDT", "POLUSDT"
 ]
 
 MINUTE = 1    # 基础数据单位

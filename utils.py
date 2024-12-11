@@ -46,9 +46,10 @@ def tic2time(tic):
 
     if tic > 1000000000000:
         tic /= 1000
-
-    date = time.localtime(tic)
-    return "%s年%s月%s日 %02d:%02d:%02d" % (date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec)
+  
+    date = time.localtime(tic+8*60*60)
+    return time.strftime('%H:%M:%S',date)
+   # return "%s年%s月%s日 %02d:%02d:%02d" % (date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec)
 
 
 def time2tic(year, month, day, hour, minute, second):

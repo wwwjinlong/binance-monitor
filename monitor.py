@@ -71,13 +71,13 @@ class Monitor:
                 self.last_alarm_tic = time.time()
             return
 
-        # 一定时间内价格上涨5%
+        # 一定时间内价格上涨3%
         for i in range(1, 10):
-            if price < self.prices[-1-i] * 1.05:
+            if price < self.prices[-1-i] * 1.03:
                 continue
 
             if self.last_alarm != 1 or time.time() - self.last_alarm_tic > 600:
-                WxPusher.send_message("%s >>> %s, $%s, %s分钟内价格上涨%.1f%%" % (
+                WxPusher.send_message("%s上涨: %s, $%s, %s分钟内%.1f%%" % (
                     utils.tic2time(tic),
                     self.symbol,
                     utils.standardize(price),
@@ -89,24 +89,19 @@ class Monitor:
                 self.last_alarm_tic = time.time()
             return
 
-        # 一定时间内价格下跌1%
-        if self.symbol not in {"BTCUSDT"}:
-            return
+        # 一定时间内价格下跌2%
         for i in range(1, 10):
-            if price > self.prices[-1-i] * 0.99:
+            if price > self.prices[-1-i] * 0.98:
                 continue
 
             if self.last_alarm != -1 or time.time() - self.last_alarm_tic > 600:
-                WxPusher.send_message("\033[1;31m%s >>> %s, $%s, %s分钟内价格下跌%.1f%%\033[0m" % (    # 显示红色字体
+                WxPusher.send_message("%s下跌: %s, $%s, %s分钟内%.1f%%" % (
                     utils.tic2time(tic),
                     self.symbol,
                     utils.standardize(price),
                     i,
                     (1 - price / self.prices[-1-i]) * 100,
                 ))
-                for _ in range(5):
-                    # pygame.mixer.music.play()    # 重复播放提示音
-                    time.sleep(0.5)
                 self.last_alarm = -1
                 self.last_alarm_tic = time.time()
             return
@@ -160,12 +155,15 @@ if __name__ == "__main__":
 
         # 计算top100综合价格指数
         index = 0
+        coinPrice = ''
         for coin, monitor in top100.items():
             index += monitor.prices[-1] / init_prices[coin] / 100
+            coinPrice +=  "%s   : %.4f \n" % (coin, monitor.prices[-1])
         if time.time() - last_cal_index_tic > 600:
-            WxPusher.send_message("%s --- 价格指数, %.3f" % (
+            WxPusher.send_message("%s指数: %.3f \n %s" % (
                 utils.tic2time(time.time()),
                 index,
+                coinPrice,
             ))
             last_cal_index_tic = time.time()
 
